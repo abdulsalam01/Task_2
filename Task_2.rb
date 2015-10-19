@@ -1,11 +1,11 @@
 class Player
 
-  $name = [ ]
-  $manna = Array.new(name.length,40)
-  $blood = Array.new(name.length,100)
+  $name  = [ ]
   $x = 0
-  
-  def initialize
+  $manna = Hash.new{40}
+  $blood = Hash.new{100}
+
+  def initialize #done
     puts "================================"
     puts "Welcome to the Battle Arena"
     puts "--------------------------------"
@@ -15,7 +15,7 @@ class Player
     puts '--------------------------------'
   end
 
-  def setPlay(getPlay)
+  def setPlay(getPlay) #done
     if getPlay == "new"
       print "Put Player Name : "
       get_name = gets.chomp.to_s
@@ -26,7 +26,7 @@ class Player
     end
   end
 
-  def char(name)
+  def char(name) #done
     initialize
     puts "Current Player :"
 
@@ -40,23 +40,7 @@ class Player
     puts '--------------------------------'
   end
 
-  def status
-    puts "Description :"
-    d = 0
-    while d < $name.length do
-      d += 1
-    end
-    $x = d
-
-    $name.each do |i|
-      puts "<Player Name '#{i}'>"
-      puts "<Manna Status : '#{$manna[$x]}'>"
-      puts "<Blood Status : '#{$blood[$x]}'>"
-      puts "--------------------------------"
-    end
-  end
-
-  def start
+  def start #finnaly_done
     puts "================================"
     puts "Ready for the Battle Arena ?"
     puts "--------------------------------"
@@ -66,37 +50,45 @@ class Player
     while v > 0 do
       print "Who attack : "
       @attacked = gets.chomp.to_str
-
-      if @attacked != '' 
-        $manna[$x] -=20
-      end
-
-      if $manna[$x] < 0
+      $manna[@attacked] -= 20
+      
+      if $manna[@attacked] < 0
         puts "\tnot enough manna,if you continue it will be -manna"
       end
 
       for h in 2..$name.length
           print "Who will attacked : "
           @attack = gets.chomp.to_str
-          $blood[$x] -=20
+          $blood[@attack] -= 20
       end
 
       status
-      if $blood[$x] == 0
+
+      if $blood[@attack] == 0
         puts "Game Over !"
         playAgain 4
       end
-      v -=20
+#     v -=20
     end
   end
 
-  def playAgain(i)
+  def status #done
+    puts "Description :"
+    return $name.each do |i|
+      puts "<Player Name '#{i}'>"
+      puts "<Manna Status : '#{$manna[i]}'>"
+      puts "<Blood Status : '#{$blood[i]}'>"
+      puts "--------------------------------"
+    end
+  end
+  
+  def playAgain(i) #done
     print "play again (y/n) ? "
     ask = gets.chomp.to_s
 
     if ask == "y" || ask == "Y"
-      $manna[$x] = 40
-      $blood[$x] = 100
+      $manna["$name"] = 40
+      $blood["$name"] = 100
       $name.clear
       i = 0
       initialize
@@ -107,6 +99,7 @@ class Player
       end
 
     else
+      puts "Thank You,Play It Again"
       exit
     end
 
@@ -114,6 +107,7 @@ class Player
 
 end
 
+#done
 i = 0
 Pl = Player.new()
 
